@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba API Clima - Manizales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .resultado {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .temperatura {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .estado {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #4CAF50;
+            padding-left: 10px;
+        }
+        .error {
+            border-left-color: #f44336;
+        }
+        .info {
+            border-left-color: #2196F3;
+        }
+        .detalles {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        .detalles.visible {
+            display: block;
+        }
+        .detalle-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Prueba de API del Clima - Manizales</h1>
+
+        <div class="resultado">
+            <div class="temperatura" id="temperatura">--°C</div>
+            <div class="estado" id="estado">Esperando datos...</div>
+
+            <div class="detalles" id="detalles">
+                <h3>📊 Detalles Adicionales:</h3>
+                <div class="detalle-item">💨 Viento: <span id="viento">--</span> km/h</div>
+                <div class="detalle-item">💧 Humedad: <span id="humedad">--</span>%</div>
+                <div class="detalle-item">🌡️ Sensación: <span id="sensacion">--</span>°C</div>
+                <div class="detalle-item">☁️ Nubosidad: <span id="nubosidad">--</span>%</div>
+                <div class="detalle-item">👁️ Visibilidad: <span id="visibilidad">--</span> km</div>
+            </div>
+        </div>
+
+        <button onclick="probarClima()">🔄 Obtener Clima Actual</button>
+
+        <div class="log" id="log">
+            <div class="log-entry info">📋 Esperando para probar la API...</div>
+        </div>
+    </div>
+
+    <script>
+        const apiKeys = [
+            'c9573a063a6260d7b688d02aea1dc299',
+            '7e4dadcd3ac9a9d324ccadb14da5b327'
+        ];
+        const city = 'Manizales';
+        const countryCode = 'CO';
+
+        function addLog(message, type = 'info') {
+            const log = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function probarClima() {
+            const temperaturaEl = document.getElementById('temperatura');
+            const estadoEl = document.getElementById('estado');
+            const detallesEl = document.getElementById('detalles');
+
+            temperaturaEl.textContent = 'Cargando...';
+            estadoEl.textContent = 'Conectando con OpenWeatherMap...';
+            detallesEl.classList.remove('visible');
+
+            addLog('🌤️ Iniciando prueba de API del clima...', 'info');
+
+            for (let i = 0; i < apiKeys.length; i++) {
+                const apiKey = apiKeys[i];
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&appid=${apiKey}&lang=es&units=metric`;
+
+                addLog(`🔑 Probando API Key ${i + 1}/${apiKeys.length}`, 'info');
+                addLog(`📡 URL: ${apiUrl.substring(0, 80)}...`, 'info');
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    addLog(`📡 Status HTTP: ${response.status} ${response.statusText}`, 'info');
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        addLog(`❌ Error ${response.status}: ${errorText.substring(0, 100)}`, 'error');
+
+                        if (response.status === 401) {
+                            addLog(`⚠️ API Key ${i + 1} no autorizada. Probando siguiente...`, 'error');
+                            continue;
+                        }
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    addLog('✅ ¡Datos recibidos correctamente!', 'info');
+                    addLog(`📦 Datos: ${JSON.stringify(data).substring(0, 100)}...`, 'info');
+
+                    // Actualizar temperatura y estado
+                    const temp = Math.round(data.main.temp);
+                    const desc = data.weather[0].description;
+
+                    temperaturaEl.textContent = `${temp}°C`;
+                    estadoEl.textContent = desc.charAt(0).toUpperCase() + desc.slice(1);
+
+                    // Actualizar detalles
+                    document.getElementById('viento').textContent = (data.wind.speed * 3.6).toFixed(1);
+                    document.getElementById('humedad').textContent = data.main.humidity;
+                    document.getElementById('sensacion').textContent = Math.round(data.main.feels_like);
+                    document.getElementById('nubosidad').textContent = data.clouds.all;
+                    document.getElementById('visibilidad').textContent = (data.visibility / 1000).toFixed(1);
+
+                    detallesEl.classList.add('visible');
+
+                    addLog(`🌡️ Temperatura: ${temp}°C`, 'info');
+                    addLog(`☁️ Estado: ${desc}`, 'info');
+                    addLog(`💨 Viento: ${(data.wind.speed * 3.6).toFixed(1)} km/h`, 'info');
+                    addLog(`💧 Humedad: ${data.main.humidity}%`, 'info');
+                    addLog('✅ ¡API funcionando perfectamente!', 'info');
+
+                    return; // Éxito, salir
+
+                } catch (error) {
+                    addLog(`❌ Error con API Key ${i + 1}: ${error.message}`, 'error');
+
+                    if (i === apiKeys.length - 1) {
+                        // Último intento falló
+                        temperaturaEl.textContent = 'Error';
+                        estadoEl.textContent = 'No se pudo conectar a la API';
+                        addLog('❌ Todas las API keys fallaron', 'error');
+                        addLog('💡 Verifica: 1) API keys activas 2) Conexión a internet 3) Cuenta verificada', 'error');
+                    }
+                }
+            }
+        }
+
+        // Probar automáticamente al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            addLog('🎯 Página cargada. Click en "Obtener Clima Actual" para probar.', 'info');
+        });
+    </script>
+</body>
+</html>
