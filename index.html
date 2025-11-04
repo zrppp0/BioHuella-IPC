@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huerta Instituto Para la Ciencia - Un entorno urbano y verde</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-brand">
+                <img src="images/logo.png" alt="Huerta IPC Logo" class="nav-logo">
+                <h1>Huerta Instituto Para la Ciencia</h1>
+            </div>
+            <ul>
+                <li><a href="Historia.html">♾️ Historia</a></li>
+                <li><a href="semillas.html">🌱 Semillas</a></li>
+                <li><a href="blog.html">📚 Blog</a></li>
+                <li><a href="admin.html" class="admin-link">🔑 Admin</a></li>
+                <li><button id="darkModeToggle" class="dark-mode-toggle" aria-label="Activar modo oscuro">🌙</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="clima" class="hero">
+            <div class="clima-widget">
+                <h2>🌤️ Monitoreo Climático</h2>
+                <p id="temperatura">--°C</p>
+                <p id="estado-cielo">--</p>
+                <div class="environmental-indicator">
+                    🌱 El clima de Manizales favorece la biodiversidad y los cultivos sostenibles de la región
+                </div>
+            </div>
+        </section>
+
+                <section id="conservacion">
+            <h2>🌱 Banco de Semillas de la Huerta Urbana</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Cultivando el futuro desde la semilla. Nuestro banco de semillas es un espacio de aprendizaje y conservación donde estudiantes y profesores descubren el fascinante mundo de la agricultura urbana.
+            </p>
+
+            <div class="seeds-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+
+                <!-- Fresa -->
+                <div class="seed-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="seed-image" style="height: 200px; overflow: hidden;">
+                        <img src="images/semillas/fresa.jpg" alt="Fresas" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="seed-info" style="padding: 1.5rem;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 1.3rem;">🍓 Fresa</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                            Prefiere clima templado, suelos sueltos y drenados, pH 5.5–6.5. Siembra con plántulas o estolones a 25–30 cm. Mantener humedad 70–80%.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Zanahoria -->
+                <div class="seed-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="seed-image" style="height: 200px; overflow: hidden;">
+                        <img src="images/semillas/zanahoria.jpg" alt="Zanahorias" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="seed-info" style="padding: 1.5rem;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 1.3rem;">🥕 Zanahoria</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                            Prefiere 16–21 °C, suelos sueltos con materia orgánica, pH 5.8–7.0. Siembra directa a 0.5 cm. Cosecha a 3–4 meses con raíces de 18–25 cm.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Lechuga -->
+                <div class="seed-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="seed-image" style="height: 200px; overflow: hidden;">
+                        <img src="images/semillas/lechuga.jpg" alt="Lechuga" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="seed-info" style="padding: 1.5rem;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 1.3rem;">🥬 Lechuga</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                            Rinde mejor en clima templado, suelos sueltos y drenados con pH 6.0–7.0. Requiere humedad constante. Ciclo de 40–70 días.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="semillas.html" style="background: linear-gradient(135deg, var(--accent-color), var(--leaf-green)); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block; transition: var(--transition); box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                    🌿 Ver todas las semillas disponibles →
+                </a>
+            </div>
+        </section>
+
+        <section id="Historia">
+            <h2>🦋 Nuestra Historia</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+                Desde 1992, el Instituto para la Ciencia ha construido una trayectoria de innovación educativa. En 2022 iniciamos nuestro proyecto Como Con Eco, transformando la educación ambiental en nuestra institución.
+            </p>
+
+            <div class="timeline-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+
+                <!-- 1992: Fundación -->
+                <div class="history-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); border-left: 5px solid var(--leaf-green); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="year-badge" style="display: inline-block; background: linear-gradient(135deg, var(--accent-color), var(--accent-color)); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
+                        🏛️ 1992
+                    </div>
+                    <h3 style="color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 1.3rem;">Fundación del Instituto</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        Establecimiento en la emblemática Plaza de Bolívar de Manizales, con la misión de fomentar la ciencia desde los primeros años de educación.
+                    </p>
+                </div>
+
+                <!-- 2022: Inicio Eco-Huerta -->
+                <div class="history-card" style="background: #2c3e2d4d; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px #ffffff4d; border-left: 5px solid var(--leaf-green); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="year-badge" style="display: inline-block; background: linear-gradient(135deg, var(--leaf-green), var(--accent-color)); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
+                        🌱 2022
+                    </div>
+                    <h3 style="color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 1.3rem;">Proyecto Eco-Huerta</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        Seleccionados entre 31 escuelas por la agencia 2811 de Chile. Iniciamos nuestro viaje hacia la agricultura urbana y sostenibilidad educativa.
+                    </p>
+                </div>
+
+                <!-- 2023: Expansión -->
+                <div class="history-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px #ffffff4d; border-left: 5px solid var(--accent-color); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+   <div class="year-badge" style="display: inline-block; background: linear-gradient(135deg, var(--leaf-green), var(--accent-color)); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
+                        🏆 2023
+                    </div>
+                    <h3 style="color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 1.3rem;">Reconocimiento Nacional</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        Premio nacional y viaje a Bogotá. Recibimos carpa, deshidratador y comenzamos cultivos de hierbas medicinales y hortalizas.
+                    </p>
+                </div>
+
+                <!-- 2024: Consolidación -->
+     <div class="history-card" style="background: rgba(44, 62, 45, 0.3); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px #ffffff4d; border-left: 5px solid var(--accent-color); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                      <div class="year-badge" style="display: inline-block; background: linear-gradient(135deg, var(--leaf-green), var(--accent-color)); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
+                        🏅 2024
+                    </div>
+                    <h3 style="color: #fffffffd; margin-bottom: 0.8rem; font-size: 1.3rem;">Invernadero y Premios</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        Obtención del invernadero institucional y múltiples reconocimientos. Consolidamos un modelo educativo replicable de agricultura urbana.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Logros destacados -->
+            <div class="achievements-box" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1)); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+                <h3 style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.5rem;">🌟 Impacto y Logros</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">👨‍🎓</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-secondary);">168</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">Estudiantes Impactados</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏆</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-secondary);">3+</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">Premios Nacionales</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">♻️</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-secondary);">100%</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">Gestión de Residuos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cita inspiradora -->
+            <div style="text-align: center; font-style: italic; color: var(--text-secondary); font-size: 1.15rem; max-width: 800px; margin: 2rem auto; padding: 1.5rem; background: rgba(76, 175, 80, 0.05); border-radius: 15px; border-left: 4px solid var(--leaf-green);">
+                "La educación científica y la sostenibilidad van de la mano. Cada semilla plantada es una lección de vida y responsabilidad ambiental."
+                <div style="margin-top: 0.5rem; font-weight: 600; color: var(--primary-color);">— Instituto para la Ciencia, 2025</div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <a href="Historia.html" style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 1.2rem 2.5rem; border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-block; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3); font-size: 1.1rem;">
+                    ♾️ Conoce Nuestra Historia Completa →
+                </a>
+            </div>
+        </section>
+
+<section id="iniciativas">
+            <h2>🌱 Iniciativas Ambientales</h2>
+            <div class="news-item">
+
+
+            </div>
+        </section>
+    </main>
+        <section id="contacto">
+        <h2>📍 Contáctanos</h2>
+        <div class="contacto-container">
+            <p><strong>Dirección:</strong> Calle 25 #18-45, Manizales, Caldas, Colombia</p>
+            <p><strong>Institución:</strong> Instituto Para la Ciencia</p>
+            <p><strong>Horario:</strong> Lunes a Viernes, 7:00 a.m. – 3:00 p.m.</p>
+        </div>
+    </section>
+
+
+    <footer>
+        <p>&copy; 2025 Huerta IPC - Comprometidos con la sostenibilidad y conservación ambiental</p>
+        <p>🌱 "La Tierra no es una herencia de nuestros padres, sino un préstamo de nuestros hijos"</p>
+    </footer>
+
+    <script src="js/darkmode.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

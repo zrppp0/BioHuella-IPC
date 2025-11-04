@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 Dashboard Ambiental - Instituto Para la Ciencia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--tertiary-color) 100%);
+        }
+        .dashboard-header {
+            background: linear-gradient(90deg, var(--secondary-color) 0%, var(--tertiary-color) 100%);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(44, 62, 45, 0.3);
+            border-bottom: 3px solid var(--accent-color);
+            backdrop-filter: blur(10px);
+        }
+        .dashboard-header h1 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .dashboard-header h1::before {
+            content: '🌱 ';
+            margin-right: 0.5rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logout-btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .logout-btn:hover {
+            background-color: #ff5252;
+        }
+        .dashboard-container {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dashboard-section {
+            background: linear-gradient(145deg, rgba(61, 79, 62, 0.9), rgba(74, 95, 75, 0.8));
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(44, 62, 45, 0.3);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(127, 176, 105, 0.2);
+            transition: var(--transition);
+            position: relative;
+        }
+        .dashboard-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(44, 62, 45, 0.4);
+            border-color: rgba(127, 176, 105, 0.4);
+        }
+        .section-title {
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, var(--accent-color), var(--sky-blue)) 1;
+            font-size: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--sky-blue));
+            border-radius: 2px;
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0a7a7a;
+        }
+        .btn-danger {
+            background-color: #ff6b6b;
+        }
+        .btn-danger:hover {
+            background-color: #ff5252;
+        }
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .users-table th,
+        .users-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        .users-table th {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .users-table tr:hover {
+            background-color: var(--primary-color);
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .status-active {
+            background-color: #4caf50;
+        }
+        .status-inactive {
+            background-color: #ff6b6b;
+        }
+        .weather-preview {
+            background-color: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .success-message, .error-message {
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+        .success-message {
+            background-color: #4caf50;
+            color: white;
+        }
+        .error-message {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        /* Category Navigation Styles */
+        .category-navigation {
+            background: linear-gradient(90deg, var(--secondary-color) 0%, var(--tertiary-color) 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid rgba(127, 176, 105, 0.3);
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
+            border: 2px solid transparent;
+        }
+        .tab-btn:hover {
+            background: rgba(127, 176, 105, 0.2);
+            transform: translateY(-2px);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-color), var(--leaf-green));
+            color: var(--primary-color);
+            border-color: var(--warm-beige);
+            box-shadow: 0 4px 15px rgba(127, 176, 105, 0.3);
+        }
+
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+            width: 100%;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Content Management Grid */
+        .content-management-grid, .inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        /* Form Textarea Styles */
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(127, 176, 105, 0.3);
+            border-radius: 10px;
+            background: rgba(44, 62, 45, 0.7);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            resize: vertical;
+            transition: var(--transition);
+        }
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(127, 176, 105, 0.3);
+        }
+
+        /* Inventory Stats */
+        .inventory-stats {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--tertiary-color));
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            border: 2px solid rgba(127, 176, 105, 0.2);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--sky-blue);
+            font-weight: 500;
+        }
+
+        /* List Items Styles */
+        .initiatives-list, .events-list, .seeds-list, .tools-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+        
+        .list-item {
+            background: rgba(44, 62, 45, 0.6);
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+            transition: var(--transition);
+            position: relative;
+        }
+        .list-item:hover {
+            background: rgba(74, 95, 75, 0.7);
+            transform: translateX(5px);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        .item-title {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 8px;
+        }
+        
+        .item-content p {
+            margin: 0.5rem 0;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+        .item-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .meta-item {
+            background: rgba(127, 176, 105, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            color: var(--sky-blue);
+        }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-activa, .status-excelente { background: #4caf50; color: white; }
+        .status-pausada, .status-regular { background: #ff9800; color: white; }
+        .status-finalizada, .status-necesita_reparacion { background: #f44336; color: white; }
+        .status-bueno { background: #8bc34a; color: white; }
+        .status-fuera_de_servicio { background: #424242; color: white; }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .form-row {
+                flex-direction: column;
+            }
+            .content-management-grid, .inventory-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .category-navigation {
+                padding: 1rem;
+                justify-content: flex-start;
+            }
+            .tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            .inventory-stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>Panel de Administración Ambiental</h1>
+        <div class="user-info">
+            <span style="color: var(--sky-blue);">Bienvenido, <strong id="currentUserName" style="color: var(--accent-color);"></strong></span>
+            <span class="badge" id="userRole" style="background: rgba(127, 176, 105, 0.2); padding: 0.3rem 0.8rem; border-radius: 15px; color: var(--accent-color); font-size: 0.9rem;"></span>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Activar modo oscuro" style="margin-right: 1rem;">🌙</button>
+            <button class="logout-btn" onclick="logout()" style="background: linear-gradient(135deg, #ff8a80, #ff6b6b); border-radius: 15px; padding: 0.7rem 1.2rem; transition: var(--transition);">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <!-- Navegación por Categorías -->
+    <div class="category-navigation">
+        <button class="tab-btn active" onclick="switchTab('clima')">🌤️ Gestión del Clima</button>
+        <button class="tab-btn" onclick="switchTab('contenido')">📝 Gestión de Contenido</button>
+        <button class="tab-btn" onclick="switchTab('usuarios')" id="usersTab">👥 Gestión de Usuarios</button>
+        <button class="tab-btn" onclick="switchTab('inventario')">🌱 Inventario de Jardín</button>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- CATEGORÍA: GESTIÓN DEL CLIMA -->
+        <div class="tab-content active" id="climaTab">
+            <div class="dashboard-section">
+                <h3 class="section-title">🌤️ Modificación del Clima</h3>
+                <div class="success-message" id="weatherSuccessMsg">Clima actualizado correctamente</div>
+                <form id="weatherForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="temperatura">Temperatura (°C):</label>
+                            <input type="number" id="temperatura" min="-10" max="40" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="estadoClimatico">Estado Climático:</label>
+                            <select id="estadoClimatico" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="soleado">☀️ Soleado</option>
+                                <option value="parcialmente nublado">⛅ Parcialmente nublado</option>
+                                <option value="nublado">☁️ Nublado</option>
+                                <option value="llovizna">🌦️ Llovizna</option>
+                                <option value="lluvia">🌧️ Lluvia</option>
+                                <option value="lluvia intensa">⛈️ Lluvia intensa</option>
+                                <option value="niebla">🌫️ Niebla</option>
+                                <option value="viento">💨 Viento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="humedad">Humedad (%):</label>
+                            <input type="number" id="humedad" min="0" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="velocidadViento">Velocidad del Viento (km/h):</label>
+                            <input type="number" id="velocidadViento" min="0" max="200" step="0.1" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Actualizar Clima</button>
+                    <button type="button" class="btn" onclick="resetWeatherToAPI()">Restaurar Clima Real</button>
+                </form>
+                
+                <div class="weather-preview">
+                    <h4>Vista Previa:</h4>
+                    <p id="previewTemperatura">--°C</p>
+                    <p id="previewEstado">--</p>
+                    <p id="previewDetalles">Humedad: --% | Viento: -- km/h</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: GESTIÓN DE CONTENIDO -->
+        <div class="tab-content" id="contenidoTab">
+            <div class="content-management-grid">
+                <div class="dashboard-section">
+                    <h3 class="section-title">🌱 Gestión de Iniciativas</h3>
+                    <div class="success-message" id="initiativeSuccessMsg">Iniciativa gestionada correctamente</div>
+                    <div class="error-message" id="initiativeErrorMsg">Error al gestionar iniciativa</div>
+                    
+                    <form id="initiativeForm">
+                        <div class="form-group">
+                            <label for="initiativeIcon">Icono:</label>
+                            <select id="initiativeIcon" required>
+                                <option value="">🌱 Seleccionar...</option>
+                                <option value="🚴‍♀️">🚴‍♀️ Movilidad</option>
+                                <option value="🏫">🏫 Educación</option>
+                                <option value="🌾">🌾 Agricultura</option>
+                                <option value="💧">💧 Agua</option>
+                                <option value="♻️">♻️ Reciclaje</option>
+                                <option value="⚡">⚡ Energía</option>
+                                <option value="🌳">🌳 Bosques</option>
+                                <option value="🖤️">🖤️ Carbono</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="initiativeTitle">Título:</label>
+                            <input type="text" id="initiativeTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="initiativeDescription">Descripción:</label>
+                            <textarea id="initiativeDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="initiativeStatus">Estado:</label>
+                            <select id="initiativeStatus" required>
+                                <option value="activa">Activa</option>
+                                <option value="pausada">Pausada</option>
+                                <option value="finalizada">Finalizada</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Guardar Iniciativa</button>
+                        <button type="button" class="btn" onclick="clearInitiativeForm()">Limpiar</button>
+                    </form>
+
+                    <div class="initiatives-list" id="initiativesList">
+                        <!-- Las iniciativas se cargarán dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3 class="section-title">📋 Gestión de Eventos</h3>
+                    <div class="success-message" id="eventSuccessMsg">Evento gestionado correctamente</div>
+                    <div class="error-message" id="eventErrorMsg">Error al gestionar evento</div>
+                    
+                    <form id="eventForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventTitle">Título del Evento:</label>
+                                <input type="text" id="eventTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDate">Fecha:</label>
+                                <input type="date" id="eventDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Descripción:</label>
+                            <textarea id="eventDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventLocation">Ubicación:</label>
+                                <input type="text" id="eventLocation" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventType">Tipo:</label>
+                                <select id="eventType" required>
+                                    <option value="taller">Taller</option>
+                                    <option value="conferencia">Conferencia</option>
+                                    <option value="festival">Festival</option>
+                                    <option value="limpieza">Jornada de Limpieza</option>
+                                    <option value="siembra">Jornada de Siembra</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Guardar Evento</button>
+                        <button type="button" class="btn" onclick="clearEventForm()">Limpiar</button>
+                    </form>
+
+                    <div class="events-list" id="eventsList">
+                        <!-- Los eventos se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: GESTIÓN DE USUARIOS -->
+        <div class="tab-content" id="usuariosTab">
+            <div class="dashboard-section" id="userManagement">
+                <h3 class="section-title">👥 Gestión de Usuarios</h3>
+                <div class="success-message" id="userSuccessMsg">Usuario gestionado correctamente</div>
+                <div class="error-message" id="userErrorMsg">Error al gestionar usuario</div>
+                
+                <form id="userForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newUsername">Nombre de Usuario:</label>
+                            <input type="text" id="newUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Contraseña:</label>
+                            <input type="password" id="newPassword" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newRole">Rol:</label>
+                            <select id="newRole" required>
+                                <option value="">Seleccionar rol...</option>
+                                <option value="administrador">🔑 Administrador</option>
+                                <option value="editor">✏️ Editor</option>
+                                <option value="visualizador">👁️ Visualizador</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newStatus">Estado:</label>
+                            <select id="newStatus" required>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Crear Usuario</button>
+                    <button type="button" class="btn" onclick="clearUserForm()">Limpiar</button>
+                </form>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Los usuarios se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: INVENTARIO DE JARDÍN -->
+        <div class="tab-content" id="inventarioTab">
+            <div class="inventory-grid">
+                <div class="dashboard-section">
+                    <h3 class="section-title">🌱 Inventario de Semillas</h3>
+                    <div class="success-message" id="seedSuccessMsg">Semilla gestionada correctamente</div>
+                    <div class="error-message" id="seedErrorMsg">Error al gestionar semilla</div>
+                    
+                    <form id="seedForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seedName">Nombre de la Semilla:</label>
+                                <input type="text" id="seedName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="seedType">Tipo:</label>
+                                <select id="seedType" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="hortalizas">🥕 Hortalizas</option>
+                                    <option value="flores">🌼 Flores</option>
+                                    <option value="hierbas">🌿 Hierbas Aromáticas</option>
+                                    <option value="arboles">🌳 Árboles</option>
+                                    <option value="arbustos">🌿 Arbustos</option>
+                                    <option value="medicinales">🌱 Plantas Medicinales</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seedQuantity">Cantidad:</label>
+                                <input type="number" id="seedQuantity" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="seedUnit">Unidad:</label>
+                                <select id="seedUnit" required>
+                                    <option value="gramos">Gramos</option>
+                                    <option value="sobres">Sobres</option>
+                                    <option value="unidades">Unidades</option>
+                                    <option value="kilos">Kilos</option>
+                                </select>
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                <label for="seedLocation">Ubicación:</label>
+                                <input type="text" id="seedLocation" placeholder="Ej: Almacén A, Estante 3" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="seedNotes">Notas:</label>
+                            <textarea id="seedNotes" rows="2" placeholder="Información adicional, cuidados especiales, etc."></textarea>
+                        </div>
+                        <button type="submit" class="btn">Guardar Semilla</button>
+                        <button type="button" class="btn" onclick="clearSeedForm()">Limpiar</button>
+                    </form>
+
+                    <div class="inventory-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalSeeds">0</div>
+                            <div class="stat-label">Total Variedades</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="lowStockSeeds">0</div>
+                            <div class="stat-label">Stock Bajo</div>
+                        </div>
+                    </div>
+
+                    <div class="seeds-list" id="seedsList">
+                        <!-- Las semillas se cargarán dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3 class="section-title">🔧 Inventario de Herramientas</h3>
+                    <div class="success-message" id="toolSuccessMsg">Herramienta gestionada correctamente</div>
+                    <div class="error-message" id="toolErrorMsg">Error al gestionar herramienta</div>
+                    
+                    <form id="toolForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="toolName">Nombre de la Herramienta:</label>
+                                <input type="text" id="toolName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="toolCategory">Categoría:</label>
+                                <select id="toolCategory" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="mano">✋ Herramientas de Mano</option>
+                                    <option value="corte">✂️ Herramientas de Corte</option>
+                                    <option value="riego">💧 Sistema de Riego</option>
+                                    <option value="preparacion">🔨 Preparación de Suelo</option>
+                                    <option value="medicion">📎 Medición</option>
+                                    <option value="proteccion">🗊 Protección</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="toolQuantity">Cantidad:</label>
+                                <input type="number" id="toolQuantity" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="toolCondition">Estado:</label>
+                                <select id="toolCondition" required>
+                                    <option value="excelente">Excelente</option>
+                                    <option value="bueno">Bueno</option>
+                                    <option value="regular">Regular</option>
+                                    <option value="necesita_reparacion">Necesita Reparación</option>
+                                    <option value="fuera_de_servicio">Fuera de Servicio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="toolLocation">Ubicación:</label>
+                                <input type="text" id="toolLocation" placeholder="Ej: Almacén, Caja de herramientas" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="toolResponsible">Responsable:</label>
+                                <input type="text" id="toolResponsible" placeholder="Nombre del responsable">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolNotes">Notas:</label>
+                            <textarea id="toolNotes" rows="2" placeholder="Observaciones, mantenimiento necesario, etc."></textarea>
+                        </div>
+                        <button type="submit" class="btn">Guardar Herramienta</button>
+                        <button type="button" class="btn" onclick="clearToolForm()">Limpiar</button>
+                    </form>
+
+                    <div class="inventory-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalTools">0</div>
+                            <div class="stat-label">Total Herramientas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="needRepairTools">0</div>
+                            <div class="stat-label">Necesitan Reparación</div>
+                        </div>
+                    </div>
+
+                    <div class="tools-list" id="toolsList">
+                        <!-- Las herramientas se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/darkmode.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
